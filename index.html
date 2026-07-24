@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Preethi Budi — Hardware Validation Engineer</title>
+<meta name="description" content="Preethi Budi — Hardware Electrical Validation Engineer. MS ECE, University of Florida.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #10161b;
+    --bg-panel: #161d23;
+    --grid-line: rgba(255,176,0,0.06);
+    --amber: #ffb000;
+    --amber-dim: #8a6205;
+    --teal: #5fb8b0;
+    --ink: #edede5;
+    --ink-dim: #8a9099;
+    --hairline: #2a333b;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'IBM Plex Sans', sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    background-image:
+      linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 32px 32px;
+    color:var(--ink);
+    font-family:var(--sans);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--amber);}
+  ::selection{background:var(--amber); color:#10161b;}
+
+  /* focus visibility */
+  a:focus-visible, button:focus-visible{outline:2px solid var(--teal); outline-offset:3px;}
+
+  .wrap{max-width:880px; margin:0 auto; padding:0 24px;}
+
+  /* NAV */
+  nav{
+    position:sticky; top:0; z-index:50;
+    background:rgba(16,22,27,0.85);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--hairline);
+  }
+  nav .wrap{display:flex; align-items:center; justify-content:space-between; height:56px;}
+  .nav-mark{font-family:var(--mono); font-size:13px; color:var(--amber); letter-spacing:0.02em;}
+  .nav-links{display:flex; gap:22px; font-family:var(--mono); font-size:12px;}
+  .nav-links a{color:var(--ink-dim); text-decoration:none; letter-spacing:0.03em;}
+  .nav-links a:hover{color:var(--amber);}
+  @media (max-width:560px){ .nav-links{gap:14px;} .nav-links span.hide-mobile{display:none;} }
+
+  /* HERO */
+  header.hero{padding:88px 0 64px; position:relative; overflow:hidden;}
+  .eyebrow{
+    font-family:var(--mono); font-size:12px; color:var(--teal);
+    letter-spacing:0.12em; text-transform:uppercase; margin-bottom:18px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .eyebrow::before{content:""; width:8px; height:8px; border-radius:50%; background:var(--teal); box-shadow:0 0 8px var(--teal); display:inline-block;}
+  h1{
+    font-family:var(--mono); font-weight:700;
+    font-size:clamp(32px, 6vw, 56px);
+    margin:0 0 8px; letter-spacing:-0.01em; color:var(--ink);
+  }
+  .role{font-size:19px; color:var(--ink-dim); margin:0 0 6px; font-weight:500;}
+  .role strong{color:var(--amber); font-weight:600;}
+  .location{font-family:var(--mono); font-size:13px; color:var(--ink-dim); margin:0 0 32px;}
+
+  .scope{width:100%; height:120px; margin:8px 0 32px; display:block;}
+  .scope-trace{fill:none; stroke:var(--amber); stroke-width:2; filter:drop-shadow(0 0 6px rgba(255,176,0,0.5));}
+  .scope-grid-line{stroke:var(--hairline); stroke-width:1;}
+
+  .cta-row{display:flex; gap:14px; flex-wrap:wrap;}
+  .btn{
+    font-family:var(--mono); font-size:13px; text-decoration:none;
+    padding:11px 18px; border:1px solid var(--hairline); border-radius:3px;
+    color:var(--ink); transition:border-color .15s, color .15s, transform .15s;
+    display:inline-flex; align-items:center; gap:8px;
+  }
+  .btn:hover{border-color:var(--amber); color:var(--amber); transform:translateY(-1px);}
+  .btn.primary{border-color:var(--amber-dim); color:var(--amber);}
+  .btn.primary:hover{background:rgba(255,176,0,0.08);}
+
+  /* SECTIONS */
+  section{padding:56px 0; border-top:1px solid var(--hairline);}
+  .sec-head{display:flex; align-items:baseline; gap:14px; margin-bottom:28px;}
+  .sec-num{font-family:var(--mono); font-size:12px; color:var(--amber-dim); color:var(--teal); opacity:0.7;}
+  h2{font-family:var(--mono); font-size:13px; text-transform:uppercase; letter-spacing:0.14em; color:var(--ink-dim); margin:0; font-weight:600;}
+
+  .about p{font-size:16px; color:var(--ink); max-width:66ch; margin:0 0 16px;}
+
+  /* EXPERIENCE */
+  .entry{
+    display:grid; grid-template-columns: 130px 1fr; gap:24px;
+    padding:26px 0; border-bottom:1px solid var(--hairline);
+    opacity:0; transform:translateY(14px); transition:opacity .5s ease, transform .5s ease;
+  }
+  .entry.in-view{opacity:1; transform:translateY(0);}
+  .entry:last-child{border-bottom:none;}
+  .entry-date{font-family:var(--mono); font-size:12px; color:var(--ink-dim); padding-top:2px;}
+  .entry-role{font-size:17px; font-weight:600; color:var(--ink); margin:0 0 2px;}
+  .entry-company{font-family:var(--mono); font-size:13px; color:var(--amber); margin:0 0 4px;}
+  .entry-loc{font-family:var(--mono); font-size:12px; color:var(--ink-dim); margin:0 0 14px;}
+  .entry ul{margin:0; padding-left:18px; color:var(--ink-dim); font-size:14.5px;}
+  .entry ul li{margin-bottom:8px;}
+  .entry ul li::marker{color:var(--teal);}
+  @media (max-width:560px){ .entry{grid-template-columns:1fr; gap:6px;} }
+
+  /* PROJECTS */
+  .proj-grid{display:grid; grid-template-columns:1fr 1fr; gap:18px;}
+  @media (max-width:640px){ .proj-grid{grid-template-columns:1fr;} }
+  .proj-card{
+    border:1px solid var(--hairline); border-radius:6px; padding:20px 22px;
+    background:var(--bg-panel); transition:border-color .15s;
+  }
+  .proj-card:hover{border-color:var(--amber-dim);}
+  .proj-title{font-size:15.5px; font-weight:600; color:var(--ink); margin:0 0 4px;}
+  .proj-stack{font-family:var(--mono); font-size:11.5px; color:var(--teal); margin:0 0 12px;}
+  .proj-card ul{margin:0; padding-left:16px; color:var(--ink-dim); font-size:13.5px;}
+  .proj-card ul li{margin-bottom:6px;}
+  .proj-card ul li::marker{color:var(--teal);}
+
+  /* SKILLS PANEL */
+  .panel{
+    border:1px solid var(--hairline); border-radius:6px; background:var(--bg-panel);
+    padding:22px 24px; margin-bottom:16px;
+  }
+  .panel-label{font-family:var(--mono); font-size:11px; color:var(--teal); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:14px;}
+  .tag-row{display:flex; flex-wrap:wrap; gap:9px;}
+  .tag{
+    font-family:var(--mono); font-size:12.5px; color:var(--ink);
+    border:1px solid var(--hairline); padding:6px 11px; border-radius:3px;
+    background:rgba(255,255,255,0.02);
+  }
+  .tag.core{border-color:var(--amber-dim); color:var(--amber);}
+
+  /* EDUCATION */
+  .edu-entry{display:grid; grid-template-columns:130px 1fr; gap:24px; padding:16px 0;}
+  .edu-school{font-size:15.5px; font-weight:600; color:var(--ink); margin:0 0 2px;}
+  .edu-degree{font-size:14px; color:var(--ink-dim); margin:0;}
+  @media (max-width:560px){ .edu-entry{grid-template-columns:1fr; gap:4px;} }
+
+  /* LISTS: certs / pubs */
+  .plain-list{list-style:none; margin:0; padding:0;}
+  .plain-list li{
+    padding:14px 0; border-bottom:1px solid var(--hairline);
+    font-size:14.5px; color:var(--ink); display:flex; gap:12px;
+  }
+  .plain-list li:last-child{border-bottom:none;}
+  .plain-list li::before{content:"›"; color:var(--teal); font-family:var(--mono);}
+
+  footer{padding:48px 0 64px; text-align:center;}
+  footer p{font-family:var(--mono); font-size:12px; color:var(--ink-dim);}
+  footer a{color:var(--ink-dim); text-decoration:none; margin:0 8px;}
+  footer a:hover{color:var(--amber);}
+
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    .entry{transition:none; opacity:1; transform:none;}
+    .scope-trace{animation:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <span class="nav-mark">PB / validation-log</span>
+    <div class="nav-links">
+      <a href="#about">about</a>
+      <a href="#experience">experience</a>
+      <span class="hide-mobile"><a href="#projects">projects</a></span>
+      <span class="hide-mobile"><a href="#skills">skills</a></span>
+      <a href="#education">education</a>
+      <a href="#contact">contact</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Signal locked</div>
+    <h1>Preethi Budi</h1>
+    <p class="role">Hardware Electrical Validation Engineer — <strong>post-silicon characterization, signal integrity &amp; validation automation</strong></p>
+    <p class="location">San Jose, California · MS ECE, University of Florida · GPA 3.79/4.00</p>
+
+    <svg class="scope" viewBox="0 0 800 120" preserveAspectRatio="none" aria-hidden="true">
+      <line class="scope-grid-line" x1="0" y1="20" x2="800" y2="20"></line>
+      <line class="scope-grid-line" x1="0" y1="60" x2="800" y2="60"></line>
+      <line class="scope-grid-line" x1="0" y1="100" x2="800" y2="100"></line>
+      <line class="scope-grid-line" x1="100" y1="0" x2="100" y2="120"></line>
+      <line class="scope-grid-line" x1="300" y1="0" x2="300" y2="120"></line>
+      <line class="scope-grid-line" x1="500" y1="0" x2="500" y2="120"></line>
+      <line class="scope-grid-line" x1="700" y1="0" x2="700" y2="120"></line>
+      <path id="scopePath" class="scope-trace" d="M0,60 L60,60 L80,20 L100,100 L120,60 L200,60 L220,30 L240,90 L260,60 L360,60 L380,15 L400,105 L420,60 L520,60 L540,25 L560,95 L580,60 L680,60 L700,20 L720,100 L740,60 L800,60"></path>
+    </svg>
+
+    <div class="cta-row">
+      <a class="btn primary" href="https://www.linkedin.com/in/preethi-budi" target="_blank" rel="noopener">LinkedIn ↗</a>
+      <a class="btn" href="https://github.com/preethi-github-29" target="_blank" rel="noopener">GitHub ↗</a>
+    </div>
+  </div>
+</header>
+
+<section id="about">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">01</span><h2>About</h2></div>
+    <div class="about">
+      <p>I'm committed to mastering the full hardware development path — architecture, design, verification, and validation. Semiconductors aren't just my interest; they're the ecosystem I want to grow in and contribute to.</p>
+    </div>
+  </div>
+</section>
+
+<section id="experience">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">02</span><h2>Experience</h2></div>
+
+    <div class="entry">
+      <div class="entry-date">Jan 2026 — Apr 2026</div>
+      <div>
+        <p class="entry-role">Hardware Electrical Validation Engineer Intern</p>
+        <p class="entry-company">Astera Labs</p>
+        <p class="entry-loc">San Jose, CA</p>
+        <ul>
+          <li>Performed post-silicon electrical validation and characterization of high-speed interconnect hardware (retimers, active cable modules), including PCIe and SerDes signal paths, using oscilloscopes, signal source analyzers, and lab instrumentation.</li>
+          <li>Validated power delivery across multiple rails by characterizing DC/DC regulators and clock synthesizers under varying load, voltage/current margins (±5%, ±10%), frequency, and thermal conditions.</li>
+          <li>Developed Python-based automation to control lab setups and collect characterization data, improving repeatability of silicon validation workflows and accelerating cross-functional debug.</li>
+          <li>Executed low-speed logic validation for I²C and JTAG, correlating digital transaction traces with analog signal integrity measurements across operating corners.</li>
+          <li>Ran comprehensive power-rail validation including all-GPIO and DPM power sequencing checks to guarantee safe bring-up.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="entry-date">May 2025 — Aug 2025</div>
+      <div>
+        <p class="entry-role">FPGA/ML Intern</p>
+        <p class="entry-company">Flapmax</p>
+        <p class="entry-loc">Tampa, FL</p>
+        <ul>
+          <li>Benchmarked Day-0 vision models (ResNet-50, MobileNet, YOLO, UNET, i3d) on Agilex 3/5 FPGAs using FPGA AI Suite and OpenVINO, profiling latency, throughput, power, and resource utilization.</li>
+          <li>Designed and deployed a custom FPGA inference pipeline for the Granite-4 Tiny Preview model, optimizing CPU baselines with OpenVINO and synthesizing kernel offloads in Quartus Prime Pro.</li>
+          <li>Implemented INT4/INT8 quantized inference and sparsification, validating cycle-accurate performance via SystemVerilog HLS and Intel CoFluent prior to Agilex-5 hardware deployment.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="entry-date">Feb 2024 — Jul 2024</div>
+      <div>
+        <p class="entry-role">Electrical Engineer Intern</p>
+        <p class="entry-company">Honeywell Technology Solutions</p>
+        <p class="entry-loc">Bengaluru, Karnataka, India</p>
+        <ul>
+          <li>Analyzed PCIe-based schematic layouts for optimal component placement and signal routing to improve signal integrity and reliability.</li>
+          <li>Ran SI/PI/EMI/EMC design rule checks on high-speed hardware systems using HyperLynx and Altium.</li>
+          <li>Verified design compliance against custom DRC thresholds, resolving violations and iteratively revising layouts.</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section id="projects">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">03</span><h2>Projects</h2></div>
+    <div class="proj-grid">
+      <div class="proj-card">
+        <p class="proj-title">Multi-Level Cache &amp; Memory Hierarchy Simulator</p>
+        <p class="proj-stack">C++ · Python · Cache Coherency</p>
+        <ul>
+          <li>Built a two-level cache and memory simulator with LRU and RR replacement policies to explore architectural behaviors.</li>
+          <li>Evaluated performance under varying cache parameters, including block size, associativity, and write policies.</li>
+        </ul>
+      </div>
+      <div class="proj-card">
+        <p class="proj-title">1-D Time Convolution Using Zynq ZedBoard</p>
+        <p class="proj-stack">VHDL · Xilinx Zynq-7000 SoC · Vivado · Linux</p>
+        <ul>
+          <li>Developed a custom 1-D convolution circuit in VHDL on a Zynq-7000 SoC with ARM processor and DMA for real-time signal processing.</li>
+          <li>Accelerated convolution computation by 14× using parallel processing within the FPGA fabric.</li>
+        </ul>
+      </div>
+      <div class="proj-card">
+        <p class="proj-title">8-bit SRAM Block</p>
+        <p class="proj-stack">Cadence Virtuoso · CMOS Design</p>
+        <ul>
+          <li>Designed a 4x2 SRAM block in Cadence Virtuoso with a 6T cell layout enabling read, write, and data storage operations.</li>
+          <li>Performed access time and delay analysis for read/write operations to ensure timing reliability.</li>
+        </ul>
+      </div>
+      <div class="proj-card">
+        <p class="proj-title">PN Junction Diode Fabrication Using Thermal Diffusion</p>
+        <p class="proj-stack">KLayout · CMOS Fabrication</p>
+        <ul>
+          <li>Fabricated a PN junction diode via thermal diffusion of dopants; characterized I-V response for performance analysis.</li>
+          <li>Applied photolithography and oxide passivation techniques for junction definition and reliability enhancement.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">04</span><h2>Skills &amp; Tools</h2></div>
+
+    <div class="panel">
+      <div class="panel-label">Core</div>
+      <div class="tag-row">
+        <span class="tag core">System Stability Analysis</span>
+        <span class="tag core">Retimers</span>
+        <span class="tag core">Data Logging &amp; Analysis</span>
+        <span class="tag core">Silicon Validation</span>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-label">Programming / Scripting</div>
+      <div class="tag-row">
+        <span class="tag">Python</span>
+        <span class="tag">Verilog</span>
+        <span class="tag">VHDL</span>
+        <span class="tag">TCL</span>
+        <span class="tag">SystemVerilog</span>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-label">Simulation / CAD Tools</div>
+      <div class="tag-row">
+        <span class="tag">Cadence Virtuoso Layout XL</span>
+        <span class="tag">Xilinx Vivado</span>
+        <span class="tag">ModelSim</span>
+        <span class="tag">Synopsys VCS</span>
+        <span class="tag">LTspice</span>
+        <span class="tag">QUCS</span>
+        <span class="tag">GNU Radio</span>
+        <span class="tag">DSCH2</span>
+        <span class="tag">HyperLynx DRC</span>
+        <span class="tag">Altium</span>
+        <span class="tag">MATLAB</span>
+        <span class="tag">OpenVINO</span>
+        <span class="tag">Intel FPGA AI Suite</span>
+        <span class="tag">Quartus Prime Pro</span>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-label">Analog / Digital Design Expertise</div>
+      <div class="tag-row">
+        <span class="tag">RTL Design</span>
+        <span class="tag">Static Timing Analysis</span>
+        <span class="tag">Clocking Analysis</span>
+        <span class="tag">Schematic Designing</span>
+        <span class="tag">BOM</span>
+        <span class="tag">Layout vs Schematic Debug</span>
+        <span class="tag">Design Rule Check (DRC)</span>
+        <span class="tag">Oscilloscopes</span>
+        <span class="tag">PCIe</span>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-label">Operating Systems</div>
+      <div class="tag-row">
+        <span class="tag">Linux</span>
+        <span class="tag">Virtual Machine</span>
+        <span class="tag">Windows</span>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-label">Domain Knowledge</div>
+      <div class="tag-row">
+        <span class="tag">Electrical Engineering</span>
+        <span class="tag">Computer Engineering</span>
+        <span class="tag">Silicon Validation</span>
+        <span class="tag">Data Analysis</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="education">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">05</span><h2>Education</h2></div>
+
+    <div class="edu-entry">
+      <div class="entry-date">2024 — Aug 2026</div>
+      <div>
+        <p class="edu-school">University of Florida</p>
+        <p class="edu-degree">MS, Electrical and Computer Engineering · GPA 3.79/4.00</p>
+        <p class="edu-degree">Coursework: Reconfigurable Computing, Hands-on Hardware Security, Semiconductor Fabrication Lab, VLSI Design, Computer Architecture</p>
+      </div>
+    </div>
+    <div class="edu-entry">
+      <div class="entry-date">2020 — 2024</div>
+      <div>
+        <p class="edu-school">Amrita Vishwa Vidyapeetham</p>
+        <p class="edu-degree">BTech, Electrical, Electronics and Communications Engineering</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="certifications">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">06</span><h2>Certifications</h2></div>
+    <ul class="plain-list">
+      <li>SystemVerilog For RTL Design Exam</li>
+      <li>Introduction to MicroPython and Physical Computing</li>
+      <li>Certificate of Recognition — Semiconductor Education Day (UF FSI)</li>
+    </ul>
+  </div>
+</section>
+
+<section id="publications">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">07</span><h2>Publications</h2></div>
+    <ul class="plain-list">
+      <li><a href="https://ieeexplore.ieee.org/document/10560174" target="_blank" rel="noopener">Design and Implementation of an Efficient 32-Bit Fixed-Point Newton-Raphson Division-Based Reciprocal Computing Unit ↗</a></li>
+      <li><a href="https://dl.acm.org/doi/10.1145/3748173.3779569" target="_blank" rel="noopener">RISCBench: Benchmarking RISC-V Orchestration Efficiency in FPGA and FPGA-Like Computing Engines — An Industry Evaluation of Control-Plane Bottlenecks and Sustained Throughput Metrics ↗</a></li>
+    </ul>
+  </div>
+</section>
+
+<footer id="contact">
+  <div class="wrap">
+    <p>
+      <a href="mailto:preethibudi@gmail.com">Email</a> ·
+      <a href="https://www.linkedin.com/in/preethi-budi" target="_blank" rel="noopener">LinkedIn</a> ·
+      <a href="https://github.com/preethi-github-29" target="_blank" rel="noopener">GitHub</a>
+    </p>
+    <p>Built &amp; deployed with GitHub Pages.</p>
+  </div>
+</footer>
+
+<script>
+  // Reveal experience entries on scroll
+  const entries = document.querySelectorAll('.entry');
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((items) => {
+      items.forEach(item => {
+        if (item.isIntersecting) {
+          item.target.classList.add('in-view');
+          io.unobserve(item.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    entries.forEach(el => io.observe(el));
+  } else {
+    entries.forEach(el => el.classList.add('in-view'));
+  }
+
+  // Animate the scope trace drawing in once on load
+  const path = document.getElementById('scopePath');
+  if (path && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const length = path.getTotalLength();
+    path.style.strokeDasharray = length;
+    path.style.strokeDashoffset = length;
+    path.animate(
+      [{ strokeDashoffset: length }, { strokeDashoffset: 0 }],
+      { duration: 1400, easing: 'ease-out', fill: 'forwards' }
+    );
+  }
+</script>
+
+</body>
+</html>
